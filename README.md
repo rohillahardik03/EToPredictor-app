@@ -36,4 +36,4 @@ ML model hosted on Render:
 _Coming soon_
 
 ## 👨‍💻 Developer
-**Rohil Hardik** — [@rohillahardik03](https://github.com/rohillahardik03)
+**Rohilla Hardik** — [@rohillahardik03](https://github.com/rohillahardik03)
