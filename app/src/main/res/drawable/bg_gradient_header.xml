@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base dark layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#0A0E1A" />
+            <corners
+                android:bottomLeftRadius="32dp"
+                android:bottomRightRadius="32dp" />
+        </shape>
+    </item>
+
+    <!-- Neon gradient overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#2A1B5E20"
+                android:centerColor="#1500E5FF"
+                android:endColor="#00AAFF00"
+                android:angle="135"
+                android:type="linear" />
+            <corners
+                android:bottomLeftRadius="32dp"
+                android:bottomRightRadius="32dp" />
+        </shape>
+    </item>
+
+</layer-list>

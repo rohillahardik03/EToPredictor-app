@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_box_card"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="32dp">
+
+    <!-- ══ DRAG HANDLE ══ -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#44AAFF00"
+        android:layout_marginBottom="20dp" />
+
+    <!-- ══ TOP LABEL ══ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="TODAY'S ETo RESULT"
+        android:textSize="11sp"
+        android:letterSpacing="0.20"
+        android:textColor="@color/text_hint"
+        android:layout_marginBottom="6dp" />
+
+    <!-- ══ BIG ETo NUMBER ══ -->
+    <TextView
+        android:id="@+id/bsEtoValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="--"
+        android:textSize="86sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/neon_lime"
+        android:layout_marginBottom="0dp" />
+
+    <!-- ══ UNIT ══ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="mm / day"
+        android:textSize="15sp"
+        android:letterSpacing="0.08"
+        android:textColor="@color/text_hint"
+        android:layout_marginBottom="22dp" />
+
+    <!-- ══ NEON DIVIDER ══ -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#22AAFF00"
+        android:layout_marginBottom="18dp" />
+
+    <!-- ══ STATUS BANNER ══ -->
+    <TextView
+        android:id="@+id/bsEtoLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="14dp"
+        android:background="@drawable/bg_status_banner"
+        android:layout_marginBottom="18dp" />
+
+    <!-- ══ PARAMS + LOCATION ROW ══ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="22dp">
+
+        <!-- Params chip -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_status_banner"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PARAMS"
+                android:textSize="9sp"
+                android:letterSpacing="0.18"
+                android:textColor="@color/text_hint" />
+
+            <TextView
+                android:id="@+id/bsParamsUsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- / 6"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/neon_cyan"
+                android:layout_marginTop="2dp" />
+
+        </LinearLayout>
+
+        <!-- Location chip -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:background="@drawable/bg_status_banner"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOCATION"
+                android:textSize="9sp"
+                android:letterSpacing="0.18"
+                android:textColor="@color/text_hint" />
+
+            <TextView
+                android:id="@+id/bsLocationUsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textSize="12sp"
+                android:textColor="@color/neon_cyan"
+                android:gravity="center"
+                android:layout_marginTop="2dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ══ CLOSE BUTTON ══ -->
+    <Button
+        android:id="@+id/bsBtnClose"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="✕   CLOSE"
+        android:textSize="13sp"
+        android:letterSpacing="0.10"
+        android:fontFamily="sans-serif-medium"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        android:stateListAnimator="@null"
+        style="@style/Widget.MaterialComponents.Button" />
+
+</LinearLayout>

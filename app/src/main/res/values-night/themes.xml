@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.EtoPredictor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Primary — Neon Lime on dark -->
+        <item name="colorPrimary">#AAFF00</item>
+        <item name="colorPrimaryVariant">#39FF14</item>
+        <item name="colorOnPrimary">#0A0E1A</item>
+
+        <!-- Secondary — Electric Cyan -->
+        <item name="colorSecondary">#00E5FF</item>
+        <item name="colorSecondaryVariant">#18FFFF</item>
+        <item name="colorOnSecondary">#0A0E1A</item>
+
+        <!-- Background & Surface -->
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="colorSurface">@color/bg_card_dark</item>
+        <item name="colorOnSurface">@color/text_bright</item>
+        <item name="colorOnBackground">@color/text_bright</item>
+
+        <!-- Input fields glow neon -->
+        <item name="colorControlActivated">#AAFF00</item>
+        <item name="colorControlHighlight">#1AAAFF00</item>
+        <item name="colorControlNormal">#607D8B</item>
+
+        <!-- Status / nav bars — deep navy -->
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Ripple -->
+        <item name="colorPrimaryContainer">#1AAAFF00</item>
+        <item name="colorOnPrimaryContainer">#AAFF00</item>
+
+        <!-- Same shapes -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeSmall</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeMedium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeLarge</item>
+
+    </style>
+
+    <style name="ShapeSmall" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">10dp</item>
+    </style>
+    <style name="ShapeMedium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="ShapeLarge" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerSize">24dp</item>
+    </style>
+
+</resources>
