@@ -1,3 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ETo Predictor</string>
+    <string name="str_back">Back</string>
+    <string name="str_title">ETo Predictor</string>
+    <string name="str_manual_input">Manual Input</string>
+    <string name="str_toggle_theme">Toggle Theme</string>
+    <string name="str_fetching">Fetching location weather data...</string>
+    <string name="str_weather_params">WEATHER PARAMETERS</string>
+    <string name="str_hint">Enter at least 2 values. Missing values will be auto-estimated.</string>
+    <string name="str_sunshine">Sunshine Hours  n  (0 - 15 hrs)</string>
+    <string name="str_tmax">Max Temperature  Tmax  (°C)</string>
+    <string name="str_tmin">Min Temperature  Tmin  (°C)</string>
+    <string name="str_rhmax">Max Relative Humidity  RHmax  (%)</string>
+    <string name="str_rhmin">Min Relative Humidity  RHmin  (%)</string>
+    <string name="str_wind">Wind Speed  u  (m/s)</string>
+    <string name="str_predict">PREDICT ETo</string>
+    <string name="str_clear">CLEAR</string>
+    <string name="str_calculating">CALCULATING ETo...</string>
+    <string name="str_result">RESULT</string>
+    <string name="str_placeholder">--</string>
+    <string name="str_mm_day">mm / day</string>
 </resources>

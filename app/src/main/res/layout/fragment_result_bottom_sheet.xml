@@ -11,15 +11,16 @@
     android:paddingTop="16dp"
     android:paddingBottom="32dp">
 
-    <!-- ══ DRAG HANDLE ══ -->
+    <!-- Drag Handle -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:background="#44AAFF00"
+        android:background="@color/brand_primary"
+        android:alpha="0.3"
         android:layout_marginBottom="20dp" />
 
-    <!-- ══ TOP LABEL ══ -->
+    <!-- Top Label -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,10 +28,11 @@
         android:text="TODAY'S ETo RESULT"
         android:textSize="11sp"
         android:letterSpacing="0.20"
-        android:textColor="@color/text_hint"
+        android:textColor="?attr/colorOnSurface"
+        android:alpha="0.55"
         android:layout_marginBottom="6dp" />
 
-    <!-- ══ BIG ETo NUMBER ══ -->
+    <!-- Big ETo Number -->
     <TextView
         android:id="@+id/bsEtoValue"
         android:layout_width="wrap_content"
@@ -40,10 +42,10 @@
         android:textSize="86sp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-light"
-        android:textColor="@color/neon_lime"
+        android:textColor="?attr/colorPrimary"
         android:layout_marginBottom="0dp" />
 
-    <!-- ══ UNIT ══ -->
+    <!-- Unit -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,17 +53,18 @@
         android:text="mm / day"
         android:textSize="15sp"
         android:letterSpacing="0.08"
-        android:textColor="@color/text_hint"
+        android:textColor="?attr/colorOnSurface"
+        android:alpha="0.55"
         android:layout_marginBottom="22dp" />
 
-    <!-- ══ NEON DIVIDER ══ -->
+    <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#22AAFF00"
+        android:background="@color/divider_light"
         android:layout_marginBottom="18dp" />
 
-    <!-- ══ STATUS BANNER ══ -->
+    <!-- Status Banner -->
     <TextView
         android:id="@+id/bsEtoLabel"
         android:layout_width="match_parent"
@@ -72,9 +75,10 @@
         android:gravity="center"
         android:padding="14dp"
         android:background="@drawable/bg_status_banner"
+        android:textColor="?attr/colorOnSurface"
         android:layout_marginBottom="18dp" />
 
-    <!-- ══ PARAMS + LOCATION ROW ══ -->
+    <!-- Params + Location Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,7 +103,8 @@
                 android:text="PARAMS"
                 android:textSize="9sp"
                 android:letterSpacing="0.18"
-                android:textColor="@color/text_hint" />
+                android:textColor="?attr/colorOnSurface"
+                android:alpha="0.55" />
 
             <TextView
                 android:id="@+id/bsParamsUsed"
@@ -108,7 +113,7 @@
                 android:text="-- / 6"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/neon_cyan"
+                android:textColor="?attr/colorPrimary"
                 android:layout_marginTop="2dp" />
 
         </LinearLayout>
@@ -130,7 +135,8 @@
                 android:text="LOCATION"
                 android:textSize="9sp"
                 android:letterSpacing="0.18"
-                android:textColor="@color/text_hint" />
+                android:textColor="?attr/colorOnSurface"
+                android:alpha="0.55" />
 
             <TextView
                 android:id="@+id/bsLocationUsed"
@@ -138,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:text="--"
                 android:textSize="12sp"
-                android:textColor="@color/neon_cyan"
+                android:textColor="?attr/colorSecondary"
                 android:gravity="center"
                 android:layout_marginTop="2dp" />
 
@@ -146,18 +152,18 @@
 
     </LinearLayout>
 
-    <!-- ══ CLOSE BUTTON ══ -->
+    <!-- Close Button -->
     <Button
         android:id="@+id/bsBtnClose"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:text="✕   CLOSE"
+        android:text="CLOSE"
         android:textSize="13sp"
         android:letterSpacing="0.10"
         android:fontFamily="sans-serif-medium"
-        android:backgroundTint="?attr/colorPrimaryContainer"
-        android:textColor="?attr/colorOnPrimaryContainer"
-        android:stateListAnimator="@null"
-        style="@style/Widget.MaterialComponents.Button" />
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="@android:color/white"
+        android:stateListAnimator="@null" />
 
 </LinearLayout>

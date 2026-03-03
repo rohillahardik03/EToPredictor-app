@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark Theme Backgrounds -->
-    <color name="bg_dark">#0A0E1A</color>
-    <color name="bg_card_dark">#111827</color>
-    <color name="bg_card_dark2">#1C2539</color>
 
-    <!-- Light Theme Backgrounds -->
-    <color name="bg_light">#F0F4FF</color>
-    <color name="bg_card_light">#FFFFFF</color>
+    <!-- Brand -->
+    <color name="brand_primary">#3D6B5E</color>
+    <color name="brand_primary_dark">#1A2E2A</color>
+    <color name="brand_accent">#8BC34A</color>
+    <color name="brand_accent_soft">#B4C8A8</color>
 
-    <!-- Neon Accents -->
-    <color name="neon_lime">#AAFF00</color>
-    <color name="neon_cyan">#00E5FF</color>
-    <color name="neon_green">#39FF14</color>
-    <color name="neon_yellow">#FFE600</color>
+    <!-- Light surfaces -->
+    <color name="bg_light">#F5F5F0</color>
+    <color name="surface_light">#FFFFFF</color>
 
-    <!-- Primary (used by Material components) -->
-    <color name="primary_dark">#AAFF00</color>
-    <color name="primary_light">#2E7D32</color>
-    <color name="primary_on_dark">#0A0E1A</color>
-    <color name="primary_on_light">#FFFFFF</color>
+    <!-- Dark surfaces -->
+    <color name="bg_dark">#1A2E2A</color>
+    <color name="surface_dark">#243B35</color>
 
     <!-- Text -->
-    <color name="text_bright">#E8F0FE</color>
-    <color name="text_hint">#607D8B</color>
-    <color name="text_secondary">#90A4AE</color>
-    <color name="white">#FFFFFF</color>
+    <color name="text_on_light">#1A2E2A</color>
+    <color name="text_on_dark">#F0F5F0</color>
+    <color name="text_secondary_light">#5A7268</color>
+    <color name="text_secondary_dark">#A0B8A8</color>
 
-    <!-- ETo Status -->
-    <color name="eto_low">#39FF14</color>
-    <color name="eto_moderate">#FFE600</color>
-    <color name="eto_high">#FF6D00</color>
-    <color name="eto_very_high">#FF1744</color>
+    <!-- Utility -->
+    <color name="divider_light">#E0E8E4</color>
+    <color name="divider_dark">#2E4A40</color>
+
+    <!-- ETo status colors -->
+    <color name="eto_low">#4CAF50</color>
+    <color name="eto_moderate">#FFC107</color>
+    <color name="eto_high">#FF7043</color>
+    <color name="eto_very_high">#E53935</color>
+
 </resources>

@@ -1,53 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.EtoPredictor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Primary brand color -->
-        <item name="colorPrimary">#2E7D32</item>
-        <item name="colorPrimaryVariant">#1B5E20</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+    <style name="Theme.EToPredictor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Secondary / accent -->
-        <item name="colorSecondary">#00C853</item>
-        <item name="colorSecondaryVariant">#00E5FF</item>
-        <item name="colorOnSecondary">#0A0E1A</item>
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@color/surface_light</item>
 
-        <!-- Background & Surface -->
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorSecondaryVariant">@color/brand_accent_soft</item>
+        <item name="colorOnSecondary">@color/text_on_light</item>
+
         <item name="android:windowBackground">@color/bg_light</item>
-        <item name="colorSurface">@color/bg_card_light</item>
-        <item name="colorOnSurface">#1A1A2E</item>
-        <item name="colorOnBackground">#1A1A2E</item>
+        <item name="colorSurface">@color/surface_light</item>
+        <item name="colorOnSurface">@color/text_on_light</item>
 
-        <!-- Input fields -->
-        <item name="colorControlActivated">#2E7D32</item>
-        <item name="colorControlHighlight">#E8F5E9</item>
-        <item name="colorControlNormal">#90A4AE</item>
+        <item name="android:statusBarColor">@color/brand_primary_dark</item>
+        <item name="android:navigationBarColor">@color/bg_light</item>
 
-        <!-- Status bar -->
-        <item name="android:statusBarColor">#1B5E20</item>
-        <item name="android:navigationBarColor">#F0F4FF</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlActivated">@color/brand_accent</item>
+        <item name="colorControlHighlight">@color/divider_light</item>
 
-        <!-- Ripple -->
-        <item name="colorPrimaryContainer">#C8E6C9</item>
-        <item name="colorOnPrimaryContainer">#1B5E20</item>
-
-        <!-- Shapes -->
-        <item name="shapeAppearanceSmallComponent">@style/ShapeSmall</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeMedium</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeLarge</item>
-
-    </style>
-
-    <!-- Rounded shape styles -->
-    <style name="ShapeSmall" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerSize">10dp</item>
-    </style>
-    <style name="ShapeMedium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerSize">16dp</item>
-    </style>
-    <style name="ShapeLarge" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerSize">24dp</item>
     </style>
 
 </resources>
