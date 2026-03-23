@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "437800228100",
+    "project_id": "eto-predictor",
+    "storage_bucket": "eto-predictor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437800228100:android:38d9f70e69d8ec7710ec51",
+        "android_client_info": {
+          "package_name": "com.eto.predictor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437800228100-u276f9tpgail05ml4vp9p2rc0pb4ajgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eto.predictor",
+            "certificate_hash": "55db880dbf111560300ef763eef615eb70a4da5a"
+          }
+        },
+        {
+          "client_id": "437800228100-l21lec08ikreqhbi5a0qc0svukd9bt1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhHl5_Pny2P7Sn63AWE47Rzsl1trXZk7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437800228100-l21lec08ikreqhbi5a0qc0svukd9bt1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

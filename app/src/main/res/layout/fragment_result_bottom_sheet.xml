@@ -78,18 +78,18 @@
         android:textColor="?attr/colorOnSurface"
         android:layout_marginBottom="18dp" />
 
-    <!-- Params + Location Row -->
+    <!-- Model Rank + Location Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="22dp">
+        android:layout_marginBottom="12dp">
 
-        <!-- Params chip -->
+        <!-- Model Rank chip -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@drawable/bg_status_banner"
@@ -100,20 +100,30 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PARAMS"
+                android:text="MODEL RANK"
                 android:textSize="9sp"
                 android:letterSpacing="0.18"
                 android:textColor="?attr/colorOnSurface"
                 android:alpha="0.55" />
 
             <TextView
-                android:id="@+id/bsParamsUsed"
+                android:id="@+id/bsModelRank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-- / 6"
+                android:text="--"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="?attr/colorPrimary"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/bsModelR2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R²: --"
+                android:textSize="11sp"
+                android:textColor="?attr/colorOnSurface"
+                android:alpha="0.7"
                 android:layout_marginTop="2dp" />
 
         </LinearLayout>
@@ -121,7 +131,7 @@
         <!-- Location chip -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="2"
             android:orientation="vertical"
             android:background="@drawable/bg_status_banner"
@@ -151,6 +161,44 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- Model RMSE -->
+    <TextView
+        android:id="@+id/bsModelRmse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="11sp"
+        android:textColor="?attr/colorOnSurface"
+        android:alpha="0.6"
+        android:gravity="center"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Model Features -->
+    <TextView
+        android:id="@+id/bsModelFeatures"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="11sp"
+        android:textColor="?attr/colorOnSurface"
+        android:alpha="0.6"
+        android:gravity="center"
+        android:layout_marginBottom="18dp" />
+
+    <!-- Warnings (hidden if none) -->
+    <TextView
+        android:id="@+id/bsWarnings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="12sp"
+        android:textColor="#FF6D00"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/bg_status_banner"
+        android:visibility="gone"
+        android:layout_marginBottom="18dp" />
 
     <!-- Close Button -->
     <Button

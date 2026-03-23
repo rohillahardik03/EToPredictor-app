@@ -52,9 +52,9 @@
                     android:alpha="0.6"
                     android:textSize="12sp"
                     android:letterSpacing="0.06" />
+
             </LinearLayout>
 
-            <!-- ic_moon shown in light mode, ic_sun shown in dark mode (set from Kotlin) -->
             <ImageButton
                 android:id="@+id/btnThemeToggle"
                 android:layout_width="40dp"
@@ -76,7 +76,6 @@
             android:layout_marginBottom="18dp"
             android:visibility="gone">
 
-            <!-- Top row: spinner + status text -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,9 +97,9 @@
                     android:text="Fetching location weather data..."
                     android:textSize="13sp"
                     android:textColor="?attr/colorOnSurface" />
+
             </LinearLayout>
 
-            <!-- Location coordinates shown below status text -->
             <TextView
                 android:id="@+id/tvLocationUsed"
                 android:layout_width="wrap_content"
@@ -137,131 +136,179 @@
                 android:id="@+id/tvInputHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter at least 2 values. Missing values will be auto-estimated."
+                android:text="Fill in all selected fields to predict ETo."
                 android:textSize="12sp"
                 android:textColor="?attr/colorOnSurface"
                 android:alpha="0.6"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Row 1 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Row 1 — Sunshine Hours -->
+            <LinearLayout
+                android:id="@+id/rowSunshine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sunshine Hours  n  (0 - 15 hrs)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="14dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSunshine"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical">
 
-            <!-- Row 2 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Max Temperature  Tmax  (°C)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="14dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTmax"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal|numberSigned"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Sunshine Hours  n  (0 - 14 hrs)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="14dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSunshine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Row 3 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Min Temperature  Tmin  (°C)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="14dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal|numberSigned"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <!-- Row 4 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Row 2 — Tmax -->
+            <LinearLayout
+                android:id="@+id/rowTmax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Max Relative Humidity  RHmax  (%)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="14dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etRHmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical">
 
-            <!-- Row 5 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Min Relative Humidity  RHmin  (%)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="14dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etRHmin"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Max Temperature  Tmax  (°C)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="14dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTmax"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Row 6 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            </LinearLayout>
+
+            <!-- Row 3 — Tmin -->
+            <LinearLayout
+                android:id="@+id/rowTmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Wind Speed  u  (m/s)"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxStrokeColor="?attr/colorPrimary"
-                android:layout_marginBottom="20dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etWind"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textColor="?attr/colorOnSurface" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Min Temperature  Tmin  (°C)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="14dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Row 4 — RHmax -->
+            <LinearLayout
+                android:id="@+id/rowRHmax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Max Relative Humidity  RHmax  (%)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="14dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRHmax"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Row 5 — RHmin -->
+            <LinearLayout
+                android:id="@+id/rowRHmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Min Relative Humidity  RHmin  (%)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="14dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRHmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Row 6 — Wind -->
+            <LinearLayout
+                android:id="@+id/rowWind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Wind Speed  u  (m/s)"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    android:layout_marginBottom="20dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <!-- Predict Button -->
             <Button
@@ -275,7 +322,7 @@
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="10dp" />
 
-            <!-- Clear Button — outlined style, no bright background -->
+            <!-- Clear Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnClear"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -315,74 +362,6 @@
                 android:textColor="?attr/colorOnSurface"
                 android:alpha="0.7"
                 android:layout_marginTop="14dp" />
-        </LinearLayout>
-
-        <!-- Result Card -->
-        <LinearLayout
-            android:id="@+id/resultCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="22dp"
-            android:gravity="center"
-            android:background="@drawable/bg_box_card"
-            android:visibility="gone"
-            android:layout_marginBottom="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RESULT"
-                android:textSize="11sp"
-                android:letterSpacing="0.15"
-                android:textColor="?attr/colorOnSurface"
-                android:alpha="0.6"
-                android:layout_marginBottom="14dp" />
-
-            <TextView
-                android:id="@+id/tvEtoValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="--"
-                android:textSize="68sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorPrimary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mm / day"
-                android:textSize="16sp"
-                android:letterSpacing="0.05"
-                android:textColor="?attr/colorOnSurface"
-                android:alpha="0.6"
-                android:layout_marginBottom="16dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider_light"
-                android:layout_marginBottom="14dp" />
-
-            <TextView
-                android:id="@+id/tvEtoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="6dp"
-                android:textColor="?attr/colorOnSurface" />
-
-            <TextView
-                android:id="@+id/tvParamsUsed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="12sp"
-                android:textColor="?attr/colorOnSurface"
-                android:alpha="0.6" />
 
         </LinearLayout>
 

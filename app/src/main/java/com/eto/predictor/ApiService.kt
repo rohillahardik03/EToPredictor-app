@@ -8,26 +8,58 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-// ── ETo Prediction Models ─────────────────────────────────────────────
-data class EToRequest(
-    val n: Double?,
-    val tmax: Double?,
-    val tmin: Double?,
-    val rhmax: Double?,
-    val rhmin: Double?,
-    val u: Double?
+// ── Models List Response ──────────────────────────────────────────────
+data class ModelResponse(
+    val total: Int,
+    val models: List<ApiModel>
 )
 
-data class EToResponse(
-    val eto: Double,
+data class ApiModel(
+    val rank: Int,
+    val id: String,
+    val features: String,
+    val n_inputs: Int,
+    val r2_test: Double,
+    val rmse: Double,
+    val mae: Double,
+    val nse: Double,
+    val input_cols: List<String>
+)
+
+// ── ETo Prediction Request ────────────────────────────────────────────
+data class EToNewRequest(
+    val parameters: Map<String, Double>
+)
+
+// ── ETo Prediction Response ───────────────────────────────────────────
+data class EToModelUsed(
+    val id: String,
+    val rank: Int,
+    val r2_test: Double,
+    val rmse: Double,
+    val mae: Double,
+    val nse: Double,
+    val features: String,
+    val epochs_run: Int
+)
+
+data class EToNewResponse(
+    val success: Boolean,
+    val eto_mm_per_day: Double,
     val unit: String,
-    val params_provided: Int,
-    val imputed_values: Map<String, Double>
+    val model_used: EToModelUsed,
+    val inputs_used: Map<String, Double>,
+    val warnings: List<String>
 )
 
+// ── ETo API Interface ─────────────────────────────────────────────────
 interface EToApiService {
+
+    @GET("models")
+    suspend fun getModels(): ModelResponse
+
     @POST("predict")
-    suspend fun predictETo(@Body request: EToRequest): Response<EToResponse>
+    suspend fun predictETo(@Body request: EToNewRequest): Response<EToNewResponse>
 }
 
 // ── Open-Meteo Historical Forecast ────────────────────────────────────
@@ -42,23 +74,42 @@ data class MeteoResponse(
     )
     data class HourlyData(
         val relativehumidity_2m: List<Int>,
-        val direct_radiation: List<Double>,   // used for sunshine hours
-        val windspeed_10m: List<Double>        // used for FAO-56 wind conversion
+        val shortwave_radiation: List<Double>,
+        val windspeed_10m: List<Double>
     )
 }
 
 interface OpenMeteoHistoricalApi {
     @GET("v1/forecast")
     suspend fun getTodayData(
-        @Query("latitude") lat: Double,
-        @Query("longitude") lon: Double,
-        @Query("daily") daily: String = "temperature_2m_max,temperature_2m_min,windspeed_10m_mean",
-        @Query("hourly") hourly: String = "relativehumidity_2m,direct_radiation,windspeed_10m",
-        @Query("past_days") pastDays: Int = 0,
-        @Query("forecast_days") forecastDays: Int = 1,
-        @Query("timezone") timezone: String = "auto",
+        @Query("latitude")        lat: Double,
+        @Query("longitude")       lon: Double,
+        @Query("daily")           daily: String = "temperature_2m_max,temperature_2m_min,windspeed_10m_mean",
+        @Query("hourly")          hourly: String = "relativehumidity_2m,shortwave_radiation,windspeed_10m",
+        @Query("past_days")       pastDays: Int = 0,
+        @Query("forecast_days")   forecastDays: Int = 1,
+        @Query("timezone")        timezone: String = "auto",
         @Query("wind_speed_unit") windUnit: String = "ms"
     ): Response<MeteoResponse>
+}
+
+// ── OpenWeatherMap Current Weather ────────────────────────────────────
+data class OwmResponse(
+    val wind: WindData
+) {
+    data class WindData(
+        val speed: Double
+    )
+}
+
+interface OpenWeatherMapApi {
+    @GET("data/2.5/weather")
+    suspend fun getCurrentWeather(
+        @Query("lat")   lat: Double,
+        @Query("lon")   lon: Double,
+        @Query("appid") apiKey: String,
+        @Query("units") units: String = "metric"
+    ): Response<OwmResponse>
 }
 
 // ── Retrofit Singletons ───────────────────────────────────────────────
@@ -66,7 +117,7 @@ object RetrofitClient {
 
     val etoApi: EToApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://eto-predictor-1.onrender.com/")
+            .baseUrl("https://akhilgarg29-eto-prediction-api.hf.space/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EToApiService::class.java)
@@ -74,7 +125,7 @@ object RetrofitClient {
 
     val meteoApi: OpenMeteoHistoricalApi by lazy {
         Retrofit.Builder()
-            .baseUrl("https://historical-forecast-api.open-meteo.com/")
+            .baseUrl("https://api.open-meteo.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(OpenMeteoHistoricalApi::class.java)
@@ -87,23 +138,4 @@ object RetrofitClient {
             .build()
             .create(OpenWeatherMapApi::class.java)
     }
-
-}
-// ── OpenWeatherMap Current Weather — real station wind data ───────────
-data class OwmResponse(
-    val wind: WindData
-) {
-    data class WindData(
-        val speed: Double  // m/s at 10m
-    )
-}
-
-interface OpenWeatherMapApi {
-    @GET("data/2.5/weather")
-    suspend fun getCurrentWeather(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric"
-    ): Response<OwmResponse>
 }

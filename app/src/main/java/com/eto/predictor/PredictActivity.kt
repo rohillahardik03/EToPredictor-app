@@ -38,9 +38,11 @@ class PredictActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQUEST = 1001
     private var locationCallback: LocationCallback? = null
     private var weatherAlreadyFetched = false
+    private var isLocationFetching = false
+    private var selectedParams: List<String> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // ── Restore saved theme BEFORE setContentView ─────────────────────
+        // ── Restore saved theme BEFORE setContentView ─────────────────
         val prefs = getSharedPreferences("eto_prefs", MODE_PRIVATE)
         val savedDark = prefs.getBoolean("is_dark", false)
         AppCompatDelegate.setDefaultNightMode(
@@ -53,6 +55,7 @@ class PredictActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mode = intent.getStringExtra("mode") ?: "manual"
+        selectedParams = intent.getStringArrayListExtra("selected_params") ?: emptyList()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setupUI()
@@ -70,6 +73,7 @@ class PredictActivity : AppCompatActivity() {
                 if (newDark) AppCompatDelegate.MODE_NIGHT_YES
                 else AppCompatDelegate.MODE_NIGHT_NO
             )
+            updateThemeIcon()
         }
 
         if (mode == "auto") requestLocationAndFetchWeather()
@@ -77,7 +81,6 @@ class PredictActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Re-attempt fetch when user returns from Location Settings
         if (mode == "auto" && !weatherAlreadyFetched) {
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -91,8 +94,11 @@ class PredictActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         locationCallback?.let { fusedLocationClient.removeLocationUpdates(it) }
+        locationCallback = null
+        isLocationFetching = false
     }
 
+    // ── Theme Icon ────────────────────────────────────────────────────
     private fun updateThemeIcon() {
         val isDark = getSharedPreferences("eto_prefs", MODE_PRIVATE)
             .getBoolean("is_dark", false)
@@ -103,20 +109,46 @@ class PredictActivity : AppCompatActivity() {
         binding.btnBack.clearColorFilter()
     }
 
+    // ── Setup UI ──────────────────────────────────────────────────────
     private fun setupUI() {
         if (mode == "auto") {
             binding.tvScreenSubtitle.text = "Auto Weather Fetch"
             binding.tvInputHint.text =
                 "Weather data fetched from your location. You can edit values before predicting."
             binding.cardAutoStatus.visibility = View.VISIBLE
+            // Show all fields in auto mode
+            showAllFields()
         } else {
             binding.tvScreenSubtitle.text = "Manual Input"
+            binding.tvInputHint.text = "Fill in all selected fields to predict ETo."
             binding.cardAutoStatus.visibility = View.GONE
+            // Show only selected fields in manual mode
+            applySelectedFieldVisibility()
         }
     }
 
+    // ── Show all 6 input rows (auto mode) ─────────────────────────────
+    private fun showAllFields() {
+        binding.rowSunshine.visibility = View.VISIBLE
+        binding.rowTmax.visibility     = View.VISIBLE
+        binding.rowTmin.visibility     = View.VISIBLE
+        binding.rowRHmax.visibility    = View.VISIBLE
+        binding.rowRHmin.visibility    = View.VISIBLE
+        binding.rowWind.visibility     = View.VISIBLE
+    }
+
+    // ── Show only user-selected fields (manual mode) ──────────────────
+    private fun applySelectedFieldVisibility() {
+        binding.rowSunshine.visibility = if ("n (Sunshine hrs)"   in selectedParams) View.VISIBLE else View.GONE
+        binding.rowTmax.visibility     = if ("Tmax (°C)"          in selectedParams) View.VISIBLE else View.GONE
+        binding.rowTmin.visibility     = if ("Tmin (°C)"          in selectedParams) View.VISIBLE else View.GONE
+        binding.rowRHmax.visibility    = if ("RHmax"              in selectedParams) View.VISIBLE else View.GONE
+        binding.rowRHmin.visibility    = if ("RHmin"              in selectedParams) View.VISIBLE else View.GONE
+        binding.rowWind.visibility     = if ("u (Windspeed m/s)"  in selectedParams) View.VISIBLE else View.GONE
+    }
+
+    // ── Location Permission + Fetch ───────────────────────────────────
     private fun requestLocationAndFetchWeather() {
-        // ── Step 1: Check if location hardware is turned on ───────────────
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         val networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
@@ -126,7 +158,6 @@ class PredictActivity : AppCompatActivity() {
             return
         }
 
-        // ── Step 2: Check if permission is granted ────────────────────────
         val fineGranted = ActivityCompat.checkSelfPermission(
             this, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
@@ -159,9 +190,8 @@ class PredictActivity : AppCompatActivity() {
                 dialog.dismiss()
                 binding.cardAutoStatus.visibility = View.GONE
                 binding.tvScreenSubtitle.text = "Manual Input"
-                binding.tvInputHint.text =
-                    "Enter at least 2 values. Missing values will be auto-estimated."
-                mode = "manual"  // prevent onResume from retrying
+                binding.tvInputHint.text = "Fill in all fields to predict ETo."
+                mode = "manual"
             }
             .setCancelable(false)
             .show()
@@ -186,6 +216,9 @@ class PredictActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocationAndFetch() {
+        if (isLocationFetching) return
+        isLocationFetching = true
+
         binding.tvAutoStatus.text = "Waiting for GPS..."
         binding.progressAutoFetch.visibility = View.VISIBLE
 
@@ -194,19 +227,19 @@ class PredictActivity : AppCompatActivity() {
         ).setMinUpdateIntervalMillis(1000L)
             .setMinUpdateDistanceMeters(0f)
             .setWaitForAccurateLocation(false)
+            .setMaxUpdates(1)
             .build()
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
-                for (loc in result.locations) {
-                    if (loc != null) {
-                        locationCallback?.let { fusedLocationClient.removeLocationUpdates(it) }
-                        weatherAlreadyFetched = true
-                        binding.tvAutoStatus.text = "GPS acquired (±${loc.accuracy.toInt()}m)"
-                        fetchAllWeatherData(loc.latitude, loc.longitude)
-                        return
-                    }
-                }
+                val loc = result.locations.firstOrNull() ?: return
+                fusedLocationClient.removeLocationUpdates(this)
+                locationCallback = null
+                isLocationFetching = false
+                weatherAlreadyFetched = true
+
+                binding.tvAutoStatus.text = "GPS acquired (±${loc.accuracy.toInt()}m)"
+                fetchAllWeatherData(loc.latitude, loc.longitude)
             }
         }
 
@@ -227,6 +260,7 @@ class PredictActivity : AppCompatActivity() {
         binding.root.postDelayed(statusRunnable, 5000L)
     }
 
+    // ── Fetch Weather from Open-Meteo ─────────────────────────────────
     private fun fetchAllWeatherData(lat: Double, lon: Double) {
         binding.tvAutoStatus.text = "Fetching today's weather..."
         binding.progressAutoFetch.visibility = View.VISIBLE
@@ -234,7 +268,6 @@ class PredictActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val meteoResponse = RetrofitClient.meteoApi.getTodayData(lat, lon)
-
                 if (meteoResponse.isSuccessful && meteoResponse.body() != null) {
                     populateFields(meteoResponse.body()!!, lat, lon)
                     binding.tvAutoStatus.text = "Weather loaded successfully"
@@ -249,61 +282,58 @@ class PredictActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * FAO-56 log-law: u2 = u10 × ln(2/z0) / ln(10/z0)
-     * z0 = 0.025m for agricultural crop field (Punjab conditions)
-     */
+    // ── FAO-56 standard wind conversion: u10 → u2 ─────────────────────
     private fun convertWind10mTo2m(u10: Double): Double {
-        val z0 = 0.025
-        val u2 = u10 * (ln(2.0 / z0) / ln(10.0 / z0))
+        val u2 = u10 * (4.87 / ln(67.8 * 10.0 - 5.42))
         return Math.round(u2 * 100.0) / 100.0
     }
 
+    // ── Populate Fields from API Response ────────────────────────────
     private fun populateFields(meteo: MeteoResponse, lat: Double, lon: Double) {
         val daily = meteo.daily
         val hourly = meteo.hourly
 
-        // ── Temperature ───────────────────────────────────────────────────
+        // ── Temperature ───────────────────────────────────────────────
         val tmax = daily.temperature_2m_max.firstOrNull() ?: 0.0
         val tmin = daily.temperature_2m_min.firstOrNull() ?: 0.0
         binding.etTmax.setText(String.format("%.1f", tmax))
         binding.etTmin.setText(String.format("%.1f", tmin))
 
-        // ── Wind: current hour's value, not daily mean ────────────────────
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val u10 = if (hourly.windspeed_10m.size > currentHour) {
-            hourly.windspeed_10m[currentHour]
+        // ── Wind: 24-hour average → convert u10 to u2 ─────────────────
+        val u10 = if (hourly.windspeed_10m.isNotEmpty()) {
+            val values = hourly.windspeed_10m.take(24)
+            values.sum() / values.size
         } else {
             daily.windspeed_10m_mean.firstOrNull() ?: 0.0
         }
         val u2 = convertWind10mTo2m(u10)
         binding.etWind.setText(String.format("%.2f", u2))
 
-        // ── Humidity ──────────────────────────────────────────────────────
+        // ── Humidity ──────────────────────────────────────────────────
         val rhValues = hourly.relativehumidity_2m.take(24)
         val rhmax = rhValues.maxOrNull()?.toDouble() ?: 70.0
         val rhmin = rhValues.minOrNull()?.toDouble() ?: 30.0
         binding.etRHmax.setText(String.format("%.0f", rhmax))
         binding.etRHmin.setText(String.format("%.0f", rhmin))
 
-        // ── Sunshine hours ────────────────────────────────────────────────
-        val n = calculateSunshineHours(lat, hourly.direct_radiation)
+        // ── Sunshine hours: full 24h forecast ─────────────────────────
+        val n = calculateSunshineHours(lat, hourly.shortwave_radiation)
         binding.etSunshine.setText(String.format("%.1f", n))
 
         binding.tvLocationUsed.text = "%.4f°N, %.4f°E".format(lat, lon)
     }
 
+    // ── Sunshine Hours from Radiation ────────────────────────────────
     private fun calculateSunshineHours(lat: Double, hourlyRad: List<Double>): Double {
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val observedRad = hourlyRad.take(currentHour + 1)
+        val LOW_THRESHOLD  = 120.0   // was 160
+        val HIGH_THRESHOLD = 500.0   // was 600
 
-        val LOW_THRESHOLD = 200.0
-        val HIGH_THRESHOLD = 600.0
         var totalSunshineHours = 0.0
+        val fullDayRad = hourlyRad.take(24)
 
-        for (radiation in observedRad) {
+        for (radiation in fullDayRad) {
             when {
-                radiation <= LOW_THRESHOLD -> totalSunshineHours += 0.0
+                radiation <= LOW_THRESHOLD  -> totalSunshineHours += 0.0
                 radiation >= HIGH_THRESHOLD -> totalSunshineHours += 1.0
                 else -> totalSunshineHours +=
                     (radiation - LOW_THRESHOLD) / (HIGH_THRESHOLD - LOW_THRESHOLD)
@@ -311,37 +341,80 @@ class PredictActivity : AppCompatActivity() {
         }
 
         val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
-        val phi = lat * PI / 180.0
+        val phi   = lat * PI / 180.0
         val delta = 0.409 * sin(2 * PI * dayOfYear / 365.0 - 1.39)
-        val ws = acos(-tan(phi) * tan(delta))
+        val ws    = acos(-tan(phi) * tan(delta))
         val maxDaylightHours = 24.0 / PI * ws
 
         return totalSunshineHours.coerceIn(0.0, maxDaylightHours)
     }
 
-    private fun predict() {
-        val n = binding.etSunshine.text.toString().toDoubleOrNull()
-        val tmax = binding.etTmax.text.toString().toDoubleOrNull()
-        val tmin = binding.etTmin.text.toString().toDoubleOrNull()
-        val rhmax = binding.etRHmax.text.toString().toDoubleOrNull()
-        val rhmin = binding.etRHmin.text.toString().toDoubleOrNull()
-        val u = binding.etWind.text.toString().toDoubleOrNull()
 
-        if (listOfNotNull(n, tmax, tmin, rhmax, rhmin, u).size < 2) {
-            Toast.makeText(this, "Please enter at least 2 parameters!", Toast.LENGTH_SHORT).show()
+    // ── Predict ───────────────────────────────────────────────────────
+    private fun predict() {
+        val params = mutableMapOf<String, Double>()
+
+        if (binding.rowSunshine.visibility == View.VISIBLE)
+            binding.etSunshine.text.toString().toDoubleOrNull()
+                ?.let { params["n (Sunshine hrs)"] = it }
+
+        if (binding.rowTmax.visibility == View.VISIBLE)
+            binding.etTmax.text.toString().toDoubleOrNull()
+                ?.let { params["Tmax (°C)"] = it }
+
+        if (binding.rowTmin.visibility == View.VISIBLE)
+            binding.etTmin.text.toString().toDoubleOrNull()
+                ?.let { params["Tmin (°C)"] = it }
+
+        if (binding.rowRHmax.visibility == View.VISIBLE)
+            binding.etRHmax.text.toString().toDoubleOrNull()
+                ?.let { params["RHmax"] = it }
+
+        if (binding.rowRHmin.visibility == View.VISIBLE)
+            binding.etRHmin.text.toString().toDoubleOrNull()
+                ?.let { params["RHmin"] = it }
+
+        if (binding.rowWind.visibility == View.VISIBLE)
+            binding.etWind.text.toString().toDoubleOrNull()
+                ?.let { params["u (Windspeed m/s)"] = it }
+
+        // Validate all visible fields are filled
+        val visibleFields = listOf(
+            binding.rowSunshine, binding.rowTmax, binding.rowTmin,
+            binding.rowRHmax, binding.rowRHmin, binding.rowWind
+        ).count { it.visibility == View.VISIBLE }
+
+        if (params.size < visibleFields) {
+            Toast.makeText(this, "Please fill in all fields!", Toast.LENGTH_SHORT).show()
             return
         }
 
         binding.loadingCard.visibility = View.VISIBLE
-        binding.resultCard.visibility = View.GONE
         binding.btnPredict.isEnabled = false
 
         lifecycleScope.launch {
             try {
-                val request = EToRequest(n, tmax, tmin, rhmax, rhmin, u)
-                val response = RetrofitClient.etoApi.predictETo(request)
+                val response = RetrofitClient.etoApi.predictETo(EToNewRequest(params))
                 if (response.isSuccessful && response.body() != null) {
                     showResult(response.body()!!)
+                } else if (response.code() == 404) {
+                    AlertDialog.Builder(this@PredictActivity)
+                        .setTitle("No Model Available")
+                        .setMessage(
+                            "No trained model exists for this exact parameter combination.\n\n" +
+                                    "Please go back and either:\n" +
+                                    "• Select a different combination of parameters\n" +
+                                    "• Use \"Choose by Model\" to pick a valid model directly"
+                        )
+                        .setPositiveButton("Go Back & Reselect") { _, _ -> finish() }
+                        .setNegativeButton("Stay & Edit", null)
+                        .show()
+                } else if (response.code() == 422) {
+                    Toast.makeText(
+                        this@PredictActivity,
+                        "One or more values are out of valid range. Please check inputs.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     Toast.makeText(
                         this@PredictActivity,
@@ -352,7 +425,7 @@ class PredictActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(
                     this@PredictActivity,
-                    "Connection failed. Wait 30s and retry.",
+                    "Connection failed. Wait 30s and retry (API cold start).",
                     Toast.LENGTH_LONG
                 ).show()
             } finally {
@@ -362,13 +435,24 @@ class PredictActivity : AppCompatActivity() {
         }
     }
 
-    private fun showResult(result: EToResponse) {
+
+    // ── Show Result ───────────────────────────────────────────────────
+    private fun showResult(result: EToNewResponse) {
         val loc = binding.tvLocationUsed.text?.toString() ?: ""
         ResultBottomSheet
-            .newInstance(result.eto, result.params_provided, loc)
+            .newInstance(
+                eto      = result.eto_mm_per_day,
+                r2       = result.model_used.r2_test,
+                rmse     = result.model_used.rmse,
+                features = result.model_used.features,
+                rank     = result.model_used.rank,
+                warnings = result.warnings,
+                loc      = loc
+            )
             .show(supportFragmentManager, "ResultBottomSheet")
     }
 
+    // ── Clear Fields ──────────────────────────────────────────────────
     private fun clearFields() {
         binding.etSunshine.text?.clear()
         binding.etTmax.text?.clear()
@@ -376,7 +460,6 @@ class PredictActivity : AppCompatActivity() {
         binding.etRHmax.text?.clear()
         binding.etRHmin.text?.clear()
         binding.etWind.text?.clear()
-        binding.resultCard.visibility = View.GONE
         binding.tvLocationUsed.text = ""
     }
 }

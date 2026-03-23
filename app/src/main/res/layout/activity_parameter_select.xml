@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Select Parameters"
+        app:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/btnThemeToggle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_moon"
+            android:padding="6dp"
+            android:contentDescription="Toggle Theme" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnToggleMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Choose by Model Instead"
+        app:cornerRadius="12dp" />
+
+    <!-- Single weight container — only one child visible at a time -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- MODEL LIST -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvModels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:clipToPadding="false" />
+
+        <!-- Centered loading spinner -->
+        <ProgressBar
+            android:id="@+id/progressModels"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- MANUAL CHECKBOXES -->
+        <ScrollView
+            android:id="@+id/layoutManualParams"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="top|start"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select the parameters you want to input:"
+                    android:textSize="14sp"
+                    android:alpha="0.7"
+                    android:layout_marginBottom="16dp" />
+
+                <CheckBox
+                    android:id="@+id/cbSunshine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="n — Sunshine Hours (hrs/day)" />
+
+                <CheckBox
+                    android:id="@+id/cbTmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tmax — Maximum Temperature (°C)" />
+
+                <CheckBox
+                    android:id="@+id/cbTmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tmin — Minimum Temperature (°C)" />
+
+                <CheckBox
+                    android:id="@+id/cbRHmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RHmax — Max Relative Humidity (%)" />
+
+                <CheckBox
+                    android:id="@+id/cbRHmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RHmin — Min Relative Humidity (%)" />
+
+                <CheckBox
+                    android:id="@+id/cbU2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="u — Wind Speed (m/s)" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmParams"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Continue →"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

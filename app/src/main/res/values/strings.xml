@@ -20,4 +20,5 @@
     <string name="str_result">RESULT</string>
     <string name="str_placeholder">--</string>
     <string name="str_mm_day">mm / day</string>
+    <string name="default_web_client_id">437800228100-l21lec08ikreqhbi5a0qc0svukd9bt1e.apps.googleusercontent.com</string>
 </resources>
